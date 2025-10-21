@@ -1,23 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import ScreenTemplate from '../components/templates/ScreenTemplate';
 
 export default function Payment() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Payment</Text>
-    </View>
+    <ScreenTemplate title="Payment">
+      <View style={styles.content}>
+        <Text>Payment content goes here</Text>
+      </View>
+    </ScreenTemplate>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
   },
 });
