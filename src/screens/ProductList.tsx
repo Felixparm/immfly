@@ -3,10 +3,23 @@ import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-nat
 
 import ScreenTemplate from '../components/templates/ScreenTemplate';
 import ProductCard from '../components/molecules/ProductCard/ProductCard';
+import BottomBar from '../components/molecules/BottomBar/BottomBar';
 import { useProducts } from '../modules/useProducts';
+import { useBasket } from '../reducer/useBasket';
 
 export default function ProductList() {
   const { data: products, isLoading, error } = useProducts();
+  const { basket, handleIncrement, handleDecrement } = useBasket();
+
+  const calculateTotalPrice = () => {
+    if (!products) return 0;
+    return Object.entries(basket).reduce((total, [productId, quantity]) => {
+      const product = products.find(p => p.id === parseInt(productId));
+      return total + (product ? product.price * quantity : 0);
+    }, 0);
+  };
+
+
 
   if (isLoading) {
     return (
@@ -29,30 +42,45 @@ export default function ProductList() {
   }
 
   const renderProductGrid = () => {
-    return products?.map((product, index) => (
-      <View key={index} style={styles.cardContainer}>
-        <ProductCard 
-          product={product} 
-          showPrice 
-          showButtons 
-          disabled={product.stock === 0}
-        />
-      </View>
-    ));
+    return products?.map((product, index) => {
+      const quantity = basket[product.id] || 0;
+      return (
+        <View key={index} style={styles.cardContainer}>
+          <ProductCard 
+            product={product} 
+            quantity={quantity}
+            showPrice 
+            showButtons 
+            disabled={product.stock === 0}
+            onIncrement={() => handleIncrement(product.id)}
+            onDecrement={() => handleDecrement(product.id)}
+          />
+        </View>
+      );
+    });
   };
 
   return (
     <ScreenTemplate title="Product List">
-      <ScrollView>
-        <View style={styles.grid}>
-          {renderProductGrid()}
-        </View>
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.grid}>
+            {renderProductGrid()}
+          </View>
+        </ScrollView>
+        <BottomBar totalPrice={calculateTotalPrice()} />
+      </View>
     </ScreenTemplate>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
   centered: {
     flex: 1,
     justifyContent: 'center',
@@ -64,7 +92,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   cardContainer: {
-    flex: 1,
+    width: '48%',
     marginBottom: 8,
   },
 });

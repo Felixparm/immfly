@@ -29,8 +29,16 @@ export default function ProductCard({
           <View style={styles.bottomSection}>
             {showButtons && (
               <View style={styles.buttons}>
-                <CircleButton type={ButtonType.MINUS} onPress={onDecrement} />
-                <CircleButton type={ButtonType.PLUS} onPress={onIncrement} />
+                <CircleButton 
+                  type={ButtonType.MINUS} 
+                  onPress={onDecrement} 
+                  disabled={quantity === 0}
+                />
+                <CircleButton 
+                  type={ButtonType.PLUS} 
+                  onPress={onIncrement} 
+                  disabled={quantity >= product.stock}
+                />
               </View>
             )}
             

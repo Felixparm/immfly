@@ -6,4 +6,5 @@ export enum ButtonType {
 export interface CircleButtonProps {
   type: ButtonType;
   onPress?: () => void;
+  disabled?: boolean;
 }
