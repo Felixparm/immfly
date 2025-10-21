@@ -3,19 +3,22 @@ import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-nat
 
 import ScreenTemplate from '../components/templates/ScreenTemplate';
 import ProductCard from '../components/molecules/ProductCard/ProductCard';
-import BottomBar from '../components/molecules/BottomBar/BottomBar';
+import BottomBar from '../components/organisms/BottomBar/BottomBar';
 import { useProducts } from '../modules/useProducts';
 import { useBasket } from '../reducer/useBasket';
 
 export default function ProductList() {
   const { data: products, isLoading, error } = useProducts();
   const { basket, handleIncrement, handleDecrement } = useBasket();
+  const [selectedCategory, setSelectedCategory] = React.useState('retail');
 
   const calculateTotalPrice = () => {
     if (!products) return 0;
     return Object.entries(basket).reduce((total, [productId, quantity]) => {
       const product = products.find(p => p.id === parseInt(productId));
-      return total + (product ? product.price * quantity : 0);
+      if (!product) return total;
+      const price = selectedCategory === 'retail' ? product.price : product.discountPrice;
+      return total + (price * quantity);
     }, 0);
   };
 
@@ -44,10 +47,12 @@ export default function ProductList() {
   const renderProductGrid = () => {
     return products?.map((product, index) => {
       const quantity = basket[product.id] || 0;
+      const displayPrice = selectedCategory === 'retail' ? product.price : product.discountPrice;
+      const productWithCorrectPrice = { ...product, price: displayPrice };
       return (
         <View key={index} style={styles.cardContainer}>
           <ProductCard 
-            product={product} 
+            product={productWithCorrectPrice} 
             quantity={quantity}
             showPrice 
             showButtons 
@@ -68,7 +73,10 @@ export default function ProductList() {
             {renderProductGrid()}
           </View>
         </ScrollView>
-        <BottomBar totalPrice={calculateTotalPrice()} />
+        <BottomBar 
+          totalPrice={calculateTotalPrice()} 
+          onCategoryChange={setSelectedCategory}
+        />
       </View>
     </ScreenTemplate>
   );
