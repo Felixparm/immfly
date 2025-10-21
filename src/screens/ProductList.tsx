@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
-import { useProducts } from '../hooks/useProducts';
+
 import ScreenTemplate from '../components/templates/ScreenTemplate';
 import ProductCard from '../components/molecules/ProductCard/ProductCard';
+import { useProducts } from '../modules/useProducts';
 
 export default function ProductList() {
   const { data: products, isLoading, error } = useProducts();
@@ -28,39 +29,24 @@ export default function ProductList() {
   }
 
   const renderProductGrid = () => {
-    const rows = [];
-    for (let i = 0; i < products!.length; i += 2) {
-      const row = (
-        <View key={i} style={styles.row}>
-          <View style={styles.cardContainer}>
-            <ProductCard 
-              product={products![i]} 
-              showPrice 
-              showButtons 
-            />
-          </View>
-          {products![i + 1] ? (
-            <View style={styles.cardContainer}>
-              <ProductCard 
-                product={products![i + 1]} 
-                showPrice 
-                showButtons 
-              />
-            </View>
-          ) : (
-            <View style={styles.cardContainer} />
-          )}
-        </View>
-      );
-      rows.push(row);
-    }
-    return rows;
+    return products?.map((product, index) => (
+      <View key={index} style={styles.cardContainer}>
+        <ProductCard 
+          product={product} 
+          showPrice 
+          showButtons 
+          disabled={product.stock === 0}
+        />
+      </View>
+    ));
   };
 
   return (
     <ScreenTemplate title="Product List">
       <ScrollView>
-        {renderProductGrid()}
+        <View style={styles.grid}>
+          {renderProductGrid()}
+        </View>
       </ScrollView>
     </ScreenTemplate>
   );
@@ -72,13 +58,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  row: {
+  grid: {
     flexDirection: 'row',
-    marginBottom: 8,
+    flexWrap: 'wrap',
     gap: 8,
   },
   cardContainer: {
     flex: 1,
-    maxWidth: '50%',
+    marginBottom: 8,
   },
 });
