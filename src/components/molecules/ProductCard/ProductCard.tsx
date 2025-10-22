@@ -12,6 +12,7 @@ export default function ProductCard({
   showButtons = false,
   showPrice = false,
   disabled = false,
+  currency = 'USD',
   onIncrement,
   onDecrement,
 }: ProductCardProps) {
@@ -43,7 +44,7 @@ export default function ProductCard({
             )}
             
             {showPrice && (
-              <PriceBadge price={product.price} />
+              <PriceBadge price={product.price} currency={currency} />
             )}
           </View>
         </View>

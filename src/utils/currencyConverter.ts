@@ -25,8 +25,20 @@ export const formatCurrency = (amount: number, currency: 'EUR' | 'GBP'): string 
   return `${symbol}${amount.toFixed(2)}`;
 };
 
+export const formatPrice = (amount: number): string => {
+  return amount.toFixed(1);
+};
+
+export const getCurrencySymbol = (currency: string): string => {
+  switch(currency) {
+    case 'EUR': return '€';
+    case 'GBP': return '£';
+    default: return '$';
+  }
+};
+
 export const getDisplayAmount = (usdAmount: number, currency: string): string => {
   const amount = convertPrice(usdAmount, currency);
-  if (currency === 'USD') return `$${amount.toFixed(2)}`;
-  return formatCurrency(amount, currency as 'EUR' | 'GBP');
+  const symbol = getCurrencySymbol(currency);
+  return `${symbol}${formatPrice(amount)}`;
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 import Dropdown from '../../molecules/Dropdown/Dropdown';
+import { formatPrice } from '../../../utils/currencyConverter';
 import { WhiteContainer, Container, LeftSection, RightSection, PayText, CurrencyDropdownContainer } from './BottomBar.styles';
 
 interface BottomBarProps {
@@ -24,7 +25,7 @@ export default function BottomBar({ totalPrice, onCategoryChange, selectedCurren
     <WhiteContainer>
       <Container>
         <LeftSection>
-          <PayText>Pay {totalPrice.toFixed(2)}</PayText>
+          <PayText>Pay {formatPrice(totalPrice)}</PayText>
           <CurrencyDropdownContainer>
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>{selectedCurrency}</Text>
           </CurrencyDropdownContainer>

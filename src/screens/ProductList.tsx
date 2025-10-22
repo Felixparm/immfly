@@ -61,6 +61,7 @@ export default function ProductList() {
             showPrice 
             showButtons 
             disabled={product.stock === 0}
+            currency={currency}
             onIncrement={() => handleIncrement(product.id)}
             onDecrement={() => handleDecrement(product.id)}
           />

@@ -6,6 +6,7 @@ export interface ProductCardProps {
   showButtons?: boolean;
   showPrice?: boolean;
   disabled?: boolean;
+  currency?: string;
   onIncrement?: () => void;
   onDecrement?: () => void;
 }
