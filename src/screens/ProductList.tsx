@@ -4,12 +4,14 @@ import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-nat
 import ScreenTemplate from '../components/templates/ScreenTemplate';
 import ProductCard from '../components/molecules/ProductCard/ProductCard';
 import BottomBar from '../components/organisms/BottomBar/BottomBar';
+import CurrencyDisplay from '../components/atoms/CurrencyDisplay/CurrencyDisplay';
 import { useProducts } from '../modules/useProducts';
 import { useBasket } from '../reducer/useBasket';
+import { convertPrice } from '../utils/currencyConverter';
 
 export default function ProductList() {
   const { data: products, isLoading, error } = useProducts();
-  const { basket, handleIncrement, handleDecrement } = useBasket();
+  const { basket, currency, handleIncrement, handleDecrement, setCurrency } = useBasket();
   const [selectedCategory, setSelectedCategory] = React.useState('retail');
 
   const calculateTotalPrice = () => {
@@ -17,8 +19,9 @@ export default function ProductList() {
     return Object.entries(basket).reduce((total, [productId, quantity]) => {
       const product = products.find(p => p.id === parseInt(productId));
       if (!product) return total;
-      const price = selectedCategory === 'retail' ? product.price : product.discountPrice;
-      return total + (price * quantity);
+      const basePrice = selectedCategory === 'retail' ? product.price : product.discountPrice;
+      const convertedPrice = convertPrice(basePrice, currency);
+      return total + (convertedPrice * quantity);
     }, 0);
   };
 
@@ -47,8 +50,9 @@ export default function ProductList() {
   const renderProductGrid = () => {
     return products?.map((product, index) => {
       const quantity = basket[product.id] || 0;
-      const displayPrice = selectedCategory === 'retail' ? product.price : product.discountPrice;
-      const productWithCorrectPrice = { ...product, price: displayPrice };
+      const basePrice = selectedCategory === 'retail' ? product.price : product.discountPrice;
+      const convertedPrice = convertPrice(basePrice, currency);
+      const productWithCorrectPrice = { ...product, price: convertedPrice };
       return (
         <View key={index} style={styles.cardContainer}>
           <ProductCard 
@@ -73,10 +77,19 @@ export default function ProductList() {
             {renderProductGrid()}
           </View>
         </ScrollView>
-        <BottomBar 
-          totalPrice={calculateTotalPrice()} 
-          onCategoryChange={setSelectedCategory}
-        />
+        <View style={styles.bottomContainer}>
+          <BottomBar 
+            totalPrice={calculateTotalPrice()} 
+            onCategoryChange={setSelectedCategory}
+            selectedCurrency={currency}
+            onCurrencyChange={setCurrency}
+          />
+          <CurrencyDisplay 
+            usdAmount={calculateTotalPrice()} 
+            selectedCurrency={currency}
+            onCurrencyChange={setCurrency}
+          />
+        </View>
       </View>
     </ScreenTemplate>
   );
@@ -88,6 +101,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+  },
+  bottomContainer: {
+    paddingBottom: 20,
   },
   centered: {
     flex: 1,

@@ -22,6 +22,8 @@ export const LeftSection = styled.View`
   background-color: ${theme.colors.blue};
   justify-content: center;
   align-items: center;
+  flex-direction: row;
+  gap: 8px;
 `;
 
 export const RightSection = styled.View`
@@ -36,4 +38,8 @@ export const PayText = styled.Text`
   font-weight: ${theme.typography.medium.fontWeight};
   color: ${theme.colors.white};
   text-align: center;
+`;
+
+export const CurrencyDropdownContainer = styled.View`
+  min-width: 60px;
 `;
