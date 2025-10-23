@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Modal } from 'react-native';
 import { DropdownProps } from './Dropdown.types';
-import { Container, Button, ButtonText, Arrow, Overlay, DropdownContainer, Option, OptionText } from './Dropdown.styles';
+import { Container, Button, ButtonText, Arrow, Option, OptionText } from './Dropdown.styles';
+import CustomModal from '../CustomModal/CustomModal';
 
 export default function Dropdown({ value, options, onValueChange }: DropdownProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -22,20 +22,16 @@ export default function Dropdown({ value, options, onValueChange }: DropdownProp
         <Arrow>▼</Arrow>
       </Button>
       
-      <Modal visible={isVisible} transparent animationType="fade">
-        <Overlay onPress={() => setIsVisible(false)}>
-          <DropdownContainer>
-            {options.map((option) => (
-              <Option
-                key={option}
-                onPress={() => handleSelect(option)}
-              >
-                <OptionText>{formatLabel(option)}</OptionText>
-              </Option>
-            ))}
-          </DropdownContainer>
-        </Overlay>
-      </Modal>
+      <CustomModal visible={isVisible} onClose={() => setIsVisible(false)}>
+        {options.map((option) => (
+          <Option
+            key={option}
+            onPress={() => handleSelect(option)}
+          >
+            <OptionText>{formatLabel(option)}</OptionText>
+          </Option>
+        ))}
+      </CustomModal>
     </Container>
   );
 }

@@ -26,20 +26,6 @@ export const Arrow = styled.Text({
   color: theme.colors.white
 });
 
-export const Overlay = styled.TouchableOpacity({
-  flex: 1,
-  backgroundColor: theme.colors.overlay,
-  justifyContent: 'center',
-  alignItems: 'center'
-});
-
-export const DropdownContainer = styled.View({
-  backgroundColor: theme.colors.white,
-  borderRadius: 8,
-  minWidth: 200,
-  maxHeight: 300
-});
-
 export const Option = styled.TouchableOpacity({
   padding: 16,
   borderBottomWidth: 1,

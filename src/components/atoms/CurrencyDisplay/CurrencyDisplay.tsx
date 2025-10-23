@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, Modal } from 'react-native';
-import { Container, CurrencyText, Overlay, ModalContainer, Option, OptionText } from './CurrencyDisplay.styles';
+import { TouchableOpacity } from 'react-native';
+import { Container, CurrencyText, Option, OptionText } from './CurrencyDisplay.styles';
 import { getDisplayAmount } from '../../../utils/currencyConverter';
+import CustomModal from '../../molecules/CustomModal/CustomModal';
 
 interface CurrencyDisplayProps {
   usdAmount: number;
@@ -25,23 +26,19 @@ export default function CurrencyDisplay({ usdAmount, selectedCurrency, onCurrenc
         </Container>
       </TouchableOpacity>
       
-      <Modal visible={isVisible} transparent animationType="fade">
-        <Overlay onPress={() => setIsVisible(false)}>
-          <ModalContainer>
-            {currencies.map(currency => (
-              <Option
-                key={currency}
-                onPress={() => {
-                  onCurrencyChange(currency);
-                  setIsVisible(false);
-                }}
-              >
-                <OptionText>{currency}</OptionText>
-              </Option>
-            ))}
-          </ModalContainer>
-        </Overlay>
-      </Modal>
+      <CustomModal visible={isVisible} onClose={() => setIsVisible(false)}>
+        {currencies.map(currency => (
+          <Option
+            key={currency}
+            onPress={() => {
+              onCurrencyChange(currency);
+              setIsVisible(false);
+            }}
+          >
+            <OptionText>{currency}</OptionText>
+          </Option>
+        ))}
+      </CustomModal>
     </>
   );
 }

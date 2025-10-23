@@ -14,19 +14,6 @@ export const CurrencyText = styled.Text({
   color: theme.colors.gray
 });
 
-export const Overlay = styled.TouchableOpacity({
-  flex: 1,
-  backgroundColor: theme.colors.overlay,
-  justifyContent: 'center',
-  alignItems: 'center'
-});
-
-export const ModalContainer = styled.View({
-  backgroundColor: theme.colors.white,
-  borderRadius: 8,
-  padding: 20,
-  minWidth: 120
-});
 
 export const Option = styled.TouchableOpacity({
   paddingVertical: 12,
