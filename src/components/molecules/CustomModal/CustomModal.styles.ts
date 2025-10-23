@@ -11,6 +11,6 @@ export const Overlay = styled.TouchableOpacity({
 export const ModalContainer = styled.View({
   backgroundColor: theme.colors.white,
   borderRadius: 8,
-  padding: 20,
+  padding: 8,
   minWidth: 120
 });

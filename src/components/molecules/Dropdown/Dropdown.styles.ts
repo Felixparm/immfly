@@ -27,9 +27,7 @@ export const Arrow = styled.Text({
 });
 
 export const Option = styled.TouchableOpacity({
-  padding: 16,
-  borderBottomWidth: 1,
-  borderBottomColor: theme.colors.gray
+  padding: 16
 });
 
 export const OptionText = styled.Text({

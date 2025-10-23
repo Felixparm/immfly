@@ -17,17 +17,18 @@ export const Container = styled.View({
   overflow: 'hidden'
 });
 
-export const LeftSection = styled.View({
+export const LeftSection = styled.TouchableOpacity<{ disabled?: boolean }>(props => ({
   flex: 4,
   backgroundColor: theme.colors.blue,
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'row',
-  gap: 8
-});
+  gap: 8,
+  opacity: props.disabled ? 0.5 : 1
+}));
 
 export const RightSection = styled.View({
-  flex: 3,
+  flex:1,
   backgroundColor: theme.colors.gray,
   justifyContent: 'center',
   alignItems: 'center'
@@ -42,4 +43,10 @@ export const PayText = styled.Text({
 
 export const CurrencyDropdownContainer = styled.View({
   minWidth: 60
+});
+
+export const CurrencyText = styled.Text({
+  fontSize: theme.typography.medium.fontSize,
+  fontWeight: theme.typography.medium.fontWeight,
+  color: theme.colors.white
 });

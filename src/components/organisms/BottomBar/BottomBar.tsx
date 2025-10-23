@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
 import Dropdown from '../../molecules/Dropdown/Dropdown';
 import { formatPrice } from '../../../utils/currencyConverter';
-import { WhiteContainer, Container, LeftSection, RightSection, PayText, CurrencyDropdownContainer } from './BottomBar.styles';
+import { WhiteContainer, Container, LeftSection, RightSection, PayText, CurrencyDropdownContainer, CurrencyText } from './BottomBar.styles';
 
 interface BottomBarProps {
   totalPrice: number;
@@ -12,9 +11,9 @@ interface BottomBarProps {
   onPayPress: () => void;
 }
 
-export default function BottomBar({ totalPrice, onCategoryChange, selectedCurrency, onCurrencyChange, onPayPress }: BottomBarProps) {
+export default function BottomBar({ totalPrice, onCategoryChange, selectedCurrency, onPayPress }: BottomBarProps) {
   const [selectedValue, setSelectedValue] = useState('retail');
-  
+
   const options = ['retail', 'cabine_crew', 'happy_hour', 'business_invitation', 'tourism_invitation'];
 
   const handleCategoryChange = (value: string) => {
@@ -25,16 +24,14 @@ export default function BottomBar({ totalPrice, onCategoryChange, selectedCurren
   return (
     <WhiteContainer>
       <Container>
-        <TouchableOpacity onPress={onPayPress} disabled={totalPrice === 0} style={{ flex: 1 }}>
-          <LeftSection style={{ opacity: totalPrice === 0 ? 0.5 : 1 }}>
-            <PayText>Pay {formatPrice(totalPrice)}</PayText>
-            <CurrencyDropdownContainer>
-              <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>{selectedCurrency}</Text>
-            </CurrencyDropdownContainer>
-          </LeftSection>
-        </TouchableOpacity>
+        <LeftSection onPress={onPayPress} disabled={totalPrice === 0}>
+          <PayText>Pay {formatPrice(totalPrice)}</PayText>
+          <CurrencyDropdownContainer>
+            <CurrencyText>{selectedCurrency}</CurrencyText>
+          </CurrencyDropdownContainer>
+        </LeftSection>
         <RightSection>
-          <Dropdown 
+          <Dropdown
             value={selectedValue}
             options={options}
             onValueChange={handleCategoryChange}
