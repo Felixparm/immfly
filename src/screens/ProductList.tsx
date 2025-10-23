@@ -8,26 +8,22 @@ import BottomBar from '../components/organisms/BottomBar/BottomBar';
 import CurrencyDisplay from '../components/atoms/CurrencyDisplay/CurrencyDisplay';
 import { useProducts } from '../modules/useProducts';
 import { useBasket } from '../reducer/useBasket';
-import { convertPrice } from '../utils/currencyConverter';
-import { PriceCategory } from '../types/enums';
+import { calculateProductPrice } from '../utils/currencyConverter';
 
 export default function ProductList() {
   const router = useRouter();
   const { data: products, isLoading, error } = useProducts();
   const { basket, currency, selectedCategory, handleIncrement, handleDecrement, setCurrency, handleCategoryChange } = useBasket();
-
+  
   const calculateTotalPrice = () => {
     if (!products) return 0;
-    return Object.entries(basket).reduce((total, [productId, quantity]) => {
-      const product = products.find(p => p.id === parseInt(productId));
+    return basket.reduce((total, item) => {
+      const product = products.find(p => p.id === item.productId);
       if (!product) return total;
-      const basePrice = selectedCategory === PriceCategory.RETAIL ? product.price : product.discountPrice;
-      const convertedPrice = convertPrice(basePrice, currency);
-      return total + (convertedPrice * quantity);
+      const { totalPrice } = calculateProductPrice(product, selectedCategory, currency, item.quantity);
+      return total + totalPrice;
     }, 0);
   };
-
-
 
   if (isLoading) {
     return (
@@ -51,20 +47,19 @@ export default function ProductList() {
 
   const renderProductGrid = () => {
     return products?.map((product, index) => {
-      const quantity = basket[product.id] || 0;
-      const basePrice = selectedCategory === PriceCategory.RETAIL ? product.price : product.discountPrice;
-      const convertedPrice = convertPrice(basePrice, currency);
+      const basketItem = basket.find(item => item.productId === product.id);
+      const quantity = basketItem?.quantity || 0;
+      const { convertedPrice } = calculateProductPrice(product, selectedCategory, currency);
       const productWithCorrectPrice = { ...product, price: convertedPrice };
       return (
         <View key={index} style={styles.cardContainer}>
           <ProductCard 
             product={productWithCorrectPrice} 
             quantity={quantity}
-            showPrice 
-            showButtons 
+            showPrice  
             disabled={product.stock === 0}
             currency={currency}
-            onIncrement={() => handleIncrement(product.id)}
+            onIncrement={() => handleIncrement(product.id, product.label)}
             onDecrement={() => handleDecrement(product.id)}
           />
         </View>

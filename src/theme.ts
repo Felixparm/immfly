@@ -6,6 +6,7 @@ export const theme = {
     blue:"blue",
     red: 'red',
     gray:'gray',
+    lightGray: '#f0f0f0',
     overlay: 'rgba(0, 0, 0, 0.3)',
     whiteSemi: 'rgba(255, 255, 255, 0.9)',
   },

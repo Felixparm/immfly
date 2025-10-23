@@ -1,14 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PriceCategory } from '../types/enums';
 
+export interface BasketItem {
+  productId: number;
+  title: string;
+  quantity: number;
+}
+
 export interface BasketState {
-  items: Record<number, number>;
+  items: BasketItem[];
   currency: string;
   selectedCategory: PriceCategory;
 }
 
 const initialState: BasketState = {
-  items: {},
+  items: [],
   currency: 'USD',
   selectedCategory: PriceCategory.RETAIL,
 };
@@ -17,17 +23,25 @@ const basketSlice = createSlice({
   name: 'basket',
   initialState,
   reducers: {
-    increment: (state, action: PayloadAction<number>) => {
-      const productId = action.payload;
-      state.items[productId] = (state.items[productId] || 0) + 1;
+    increment: (state, action: PayloadAction<{ productId: number; title: string }>) => {
+      const { productId, title } = action.payload;
+      const existingItem = state.items.find(item => item.productId === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.items.push({ productId, title, quantity: 1 });
+      }
     },
     decrement: (state, action: PayloadAction<number>) => {
       const productId = action.payload;
-      const currentQuantity = state.items[productId] || 0;
-      if (currentQuantity <= 1) {
-        delete state.items[productId];
-      } else {
-        state.items[productId] = currentQuantity - 1;
+      const itemIndex = state.items.findIndex(item => item.productId === productId);
+      if (itemIndex !== -1) {
+        const item = state.items[itemIndex];
+        if (item.quantity <= 1) {
+          state.items.splice(itemIndex, 1);
+        } else {
+          item.quantity -= 1;
+        }
       }
     },
     setCurrency: (state, action: PayloadAction<string>) => {
@@ -36,8 +50,12 @@ const basketSlice = createSlice({
     setCategory: (state, action: PayloadAction<PriceCategory>) => {
       state.selectedCategory = action.payload;
     },
+    removeItem: (state, action: PayloadAction<number>) => {
+      const productId = action.payload;
+      state.items = state.items.filter(item => item.productId !== productId);
+    },
   },
 });
 
-export const { increment, decrement, setCurrency, setCategory } = basketSlice.actions;
+export const { increment, decrement, setCurrency, setCategory, removeItem } = basketSlice.actions;
 export default basketSlice.reducer;

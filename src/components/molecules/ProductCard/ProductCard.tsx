@@ -9,7 +9,6 @@ import PriceBadge from '../../atoms/PriceBadge/PriceBadge';
 export default function ProductCard({
   product,
   quantity = 0,
-  showButtons = false,
   showPrice = false,
   disabled = false,
   currency = 'USD',
@@ -28,7 +27,6 @@ export default function ProductCard({
           </View>
           
           <View style={styles.bottomSection}>
-            {showButtons && (
               <View style={styles.buttons}>
                 <CircleButton 
                   type={ButtonType.MINUS} 
@@ -41,8 +39,6 @@ export default function ProductCard({
                   disabled={quantity >= product.stock}
                 />
               </View>
-            )}
-            
             {showPrice && (
               <PriceBadge price={product.price} currency={currency} />
             )}

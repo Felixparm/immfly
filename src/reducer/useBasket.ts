@@ -1,13 +1,13 @@
 import { useAppSelector, useAppDispatch } from '../hooks/useAppSelector';
-import { increment, decrement, setCurrency as setCurrencyAction, setCategory } from '../store/basketSlice';
+import { increment, decrement, setCurrency as setCurrencyAction, setCategory, removeItem } from '../store/basketSlice';
 import { PriceCategory } from '../types/enums';
 
 export function useBasket() {
   const dispatch = useAppDispatch();
   const { items, currency, selectedCategory } = useAppSelector((state) => state.basket);
 
-  const handleIncrement = (productId: number) => {
-    dispatch(increment(productId));
+  const handleIncrement = (productId: number, title: string) => {
+    dispatch(increment({ productId, title }));
   };
 
   const handleDecrement = (productId: number) => {
@@ -22,6 +22,10 @@ export function useBasket() {
     dispatch(setCategory(category));
   };
 
+  const handleRemoveItem = (productId: number) => {
+    dispatch(removeItem(productId));
+  };
+
   return {
     basket: items,
     currency,
@@ -30,5 +34,6 @@ export function useBasket() {
     handleDecrement,
     setCurrency,
     handleCategoryChange,
+    handleRemoveItem,
   };
 }
