@@ -1,24 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Dropdown from '../../molecules/Dropdown/Dropdown';
 import { formatPrice } from '../../../utils/currencyConverter';
 import { WhiteContainer, Container, LeftSection, RightSection, PayText, CurrencyDropdownContainer, CurrencyText } from './BottomBar.styles';
+import { PRICE_CATEGORY_OPTIONS, PriceCategory } from '../../../types/enums';
 
 interface BottomBarProps {
   totalPrice: number;
-  onCategoryChange: (category: string) => void;
+  selectedCategory: PriceCategory;
+  onCategoryChange: (category: PriceCategory) => void;
   selectedCurrency: string;
-  onCurrencyChange: (currency: string) => void;
   onPayPress: () => void;
 }
 
-export default function BottomBar({ totalPrice, onCategoryChange, selectedCurrency, onPayPress }: BottomBarProps) {
-  const [selectedValue, setSelectedValue] = useState('retail');
-
-  const options = ['retail', 'cabine_crew', 'happy_hour', 'business_invitation', 'tourism_invitation'];
-
+export default function BottomBar({ totalPrice, selectedCategory, onCategoryChange, selectedCurrency, onPayPress }: BottomBarProps) {
   const handleCategoryChange = (value: string) => {
-    setSelectedValue(value);
-    onCategoryChange(value);
+    onCategoryChange(value as PriceCategory);
   };
 
   return (
@@ -32,8 +28,8 @@ export default function BottomBar({ totalPrice, onCategoryChange, selectedCurren
         </LeftSection>
         <RightSection>
           <Dropdown
-            value={selectedValue}
-            options={options}
+            value={selectedCategory}
+            options={PRICE_CATEGORY_OPTIONS}
             onValueChange={handleCategoryChange}
           />
         </RightSection>

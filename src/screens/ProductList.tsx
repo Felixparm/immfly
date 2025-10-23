@@ -9,19 +9,19 @@ import CurrencyDisplay from '../components/atoms/CurrencyDisplay/CurrencyDisplay
 import { useProducts } from '../modules/useProducts';
 import { useBasket } from '../reducer/useBasket';
 import { convertPrice } from '../utils/currencyConverter';
+import { PriceCategory } from '../types/enums';
 
 export default function ProductList() {
   const router = useRouter();
   const { data: products, isLoading, error } = useProducts();
-  const { basket, currency, handleIncrement, handleDecrement, setCurrency } = useBasket();
-  const [selectedCategory, setSelectedCategory] = React.useState('retail');
+  const { basket, currency, selectedCategory, handleIncrement, handleDecrement, setCurrency, handleCategoryChange } = useBasket();
 
   const calculateTotalPrice = () => {
     if (!products) return 0;
     return Object.entries(basket).reduce((total, [productId, quantity]) => {
       const product = products.find(p => p.id === parseInt(productId));
       if (!product) return total;
-      const basePrice = selectedCategory === 'retail' ? product.price : product.discountPrice;
+      const basePrice = selectedCategory === PriceCategory.RETAIL ? product.price : product.discountPrice;
       const convertedPrice = convertPrice(basePrice, currency);
       return total + (convertedPrice * quantity);
     }, 0);
@@ -52,7 +52,7 @@ export default function ProductList() {
   const renderProductGrid = () => {
     return products?.map((product, index) => {
       const quantity = basket[product.id] || 0;
-      const basePrice = selectedCategory === 'retail' ? product.price : product.discountPrice;
+      const basePrice = selectedCategory === PriceCategory.RETAIL ? product.price : product.discountPrice;
       const convertedPrice = convertPrice(basePrice, currency);
       const productWithCorrectPrice = { ...product, price: convertedPrice };
       return (
@@ -83,9 +83,9 @@ export default function ProductList() {
         <View style={styles.bottomContainer}>
           <BottomBar 
             totalPrice={calculateTotalPrice()} 
-            onCategoryChange={setSelectedCategory}
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategoryChange}
             selectedCurrency={currency}
-            onCurrencyChange={setCurrency}
             onPayPress={() => router.push('/payment')}
           />
           <CurrencyDisplay 

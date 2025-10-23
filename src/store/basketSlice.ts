@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PriceCategory } from '../types/enums';
 
 export interface BasketState {
   items: Record<number, number>;
   currency: string;
+  selectedCategory: PriceCategory;
 }
 
 const initialState: BasketState = {
   items: {},
   currency: 'USD',
+  selectedCategory: PriceCategory.RETAIL,
 };
 
 const basketSlice = createSlice({
@@ -30,8 +33,11 @@ const basketSlice = createSlice({
     setCurrency: (state, action: PayloadAction<string>) => {
       state.currency = action.payload;
     },
+    setCategory: (state, action: PayloadAction<PriceCategory>) => {
+      state.selectedCategory = action.payload;
+    },
   },
 });
 
-export const { increment, decrement, setCurrency } = basketSlice.actions;
+export const { increment, decrement, setCurrency, setCategory } = basketSlice.actions;
 export default basketSlice.reducer;
