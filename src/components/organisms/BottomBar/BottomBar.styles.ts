@@ -1,45 +1,45 @@
 import styled from 'styled-components/native';
 import { theme } from '../../../theme';
 
-export const WhiteContainer = styled.View`
-  height: 90px;
-  width: 100%;
-  background-color: ${theme.colors.white};
-  justify-content: center;
-  align-items: center;
-`;
+export const WhiteContainer = styled.View({
+  height: 90,
+  width: '100%',
+  backgroundColor: theme.colors.white,
+  justifyContent: 'center',
+  alignItems: 'center'
+});
 
-export const Container = styled.View`
-  height: 70px;
-  width: 80%;
-  flex-direction: row;
-  border-radius: 35px;
-  overflow: hidden;
-`;
+export const Container = styled.View({
+  height: 70,
+  width: '80%',
+  flexDirection: 'row',
+  borderRadius: 35,
+  overflow: 'hidden'
+});
 
-export const LeftSection = styled.View`
-  flex: 3;
-  background-color: ${theme.colors.blue};
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  gap: 8px;
-`;
+export const LeftSection = styled.View({
+  flex: 4,
+  backgroundColor: theme.colors.blue,
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'row',
+  gap: 8
+});
 
-export const RightSection = styled.View`
-  flex: 1;
-  background-color: ${theme.colors.gray};
-  justify-content: center;
-  align-items: center;
-`;
+export const RightSection = styled.View({
+  flex: 3,
+  backgroundColor: theme.colors.gray,
+  justifyContent: 'center',
+  alignItems: 'center'
+});
 
-export const PayText = styled.Text`
-  font-size: ${theme.typography.medium.fontSize}px;
-  font-weight: ${theme.typography.medium.fontWeight};
-  color: ${theme.colors.white};
-  text-align: center;
-`;
+export const PayText = styled.Text({
+  fontSize: theme.typography.medium.fontSize,
+  fontWeight: theme.typography.medium.fontWeight,
+  color: theme.colors.white,
+  textAlign: 'center'
+});
 
-export const CurrencyDropdownContainer = styled.View`
-  min-width: 60px;
-`;
+export const CurrencyDropdownContainer = styled.View({
+  minWidth: 60
+});

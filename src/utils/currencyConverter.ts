@@ -20,10 +20,6 @@ export const convertPrice = (usdAmount: number, toCurrency: string): number => {
   }
 };
 
-export const formatCurrency = (amount: number, currency: 'EUR' | 'GBP'): string => {
-  const symbol = currency === 'EUR' ? '€' : '£';
-  return `${symbol}${amount.toFixed(2)}`;
-};
 
 export const formatPrice = (amount: number): string => {
   return amount.toFixed(1);

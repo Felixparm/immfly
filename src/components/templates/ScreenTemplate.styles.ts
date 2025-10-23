@@ -9,9 +9,11 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   header: {
-    fontSize: theme.typography.large.fontSize,
-    fontWeight: theme.typography.large.fontWeight,
+    fontSize: theme.typography.medium.fontSize,
+    fontWeight: theme.typography.medium.fontWeight,
+    marginTop: 20,
     marginBottom: 16,
+    textAlign: 'center',
   },
   content: {
     flex: 1,

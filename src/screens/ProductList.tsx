@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import ScreenTemplate from '../components/templates/ScreenTemplate';
 import ProductCard from '../components/molecules/ProductCard/ProductCard';
@@ -10,6 +11,7 @@ import { useBasket } from '../reducer/useBasket';
 import { convertPrice } from '../utils/currencyConverter';
 
 export default function ProductList() {
+  const router = useRouter();
   const { data: products, isLoading, error } = useProducts();
   const { basket, currency, handleIncrement, handleDecrement, setCurrency } = useBasket();
   const [selectedCategory, setSelectedCategory] = React.useState('retail');
@@ -84,6 +86,7 @@ export default function ProductList() {
             onCategoryChange={setSelectedCategory}
             selectedCurrency={currency}
             onCurrencyChange={setCurrency}
+            onPayPress={() => router.push('/payment')}
           />
           <CurrencyDisplay 
             usdAmount={calculateTotalPrice()} 
