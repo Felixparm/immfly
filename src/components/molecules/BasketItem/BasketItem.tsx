@@ -1,11 +1,11 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Image } from 'react-native';
 import { formatPrice, getCurrencySymbol } from '../../../utils/currencyConverter';
+import { getImageSource } from '../../../utils/imageUtils';
 import { BasketItemProps } from './BasketItem.types';
 import {
   Container,
   LeftSection,
-  Circle,
   ProductInfo,
   ProductTitle,
   ProductPrice,
@@ -28,6 +28,7 @@ type Props = BasketItemProps & {
 };
 
 export default function BasketItem({
+  id,
   label,
   count,
   totalPrice,
@@ -35,6 +36,7 @@ export default function BasketItem({
   onDismiss,
 }: Props) {
   const currencySymbol = getCurrencySymbol(currency);
+
   const translateX = useSharedValue(0);
 
   const pan = Gesture.Pan()
@@ -65,7 +67,7 @@ export default function BasketItem({
       <Animated.View style={animatedStyle}>
         <Container>
           <LeftSection>
-            <Circle />
+            <Image source={getImageSource(id)} style={{ width: 40, height: 40, borderRadius: 20 }} />
             <ProductInfo>
               <ProductTitle>{label}</ProductTitle>
               <ProductPrice>

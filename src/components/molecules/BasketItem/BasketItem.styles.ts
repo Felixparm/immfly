@@ -15,7 +15,8 @@ export const Container = styled.View({
 export const LeftSection = styled.View({
   flexDirection: 'row',
   alignItems: 'center',
-  flex: 1
+  flex: 1,
+  gap:8
 });
 
 export const Circle = styled.View({

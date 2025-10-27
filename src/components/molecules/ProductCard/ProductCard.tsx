@@ -5,6 +5,7 @@ import { styles } from './ProductCard.styles';
 import CircleButton from '../../atoms/CircleButton/CircleButton';
 import { ButtonType } from '../../atoms/CircleButton/CircleButton.types';
 import PriceBadge from '../../atoms/PriceBadge/PriceBadge';
+import { getImageSource } from '../../../utils/imageUtils';
 
 export default function ProductCard({
   product,
@@ -19,7 +20,8 @@ export default function ProductCard({
 
   return (
     <View style={[styles.container, disabled && styles.disabled]}>
-      <ImageBackground source={{ uri: product.url }} style={styles.background} imageStyle={styles.backgroundImage}>
+      <ImageBackground source={getImageSource(product.id)} style={styles.background} imageStyle={styles.backgroundImage}>
+
         <View style={styles.content}>
           <View style={styles.topSection}>
             <Text style={styles.label}>{capitalizedLabel}</Text>
