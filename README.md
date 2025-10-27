@@ -1,50 +1,129 @@
-# Welcome to your Expo app 👋
+# Immfly Frontend Mobile Test
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application built with Expo for product browsing and payment processing.
 
-## Get started
+## Prerequisites
 
-1. Install dependencies
+- Node.js (version 18 or higher)
+- npm or yarn
+- Expo CLI
+- Expo Go app on your mobile device (for testing)
 
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd immfly-frontend-mobile-test
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. **Install Expo CLI globally** (if not already installed)
    ```bash
-   npx expo start
+   npm install -g @expo/cli
    ```
 
-In the output, you'll find options to open the app in a
+## Running the Project
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. **Start the development server**
+   ```bash
+   npm start
+   # or
+   expo start
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+2. **Run on different platforms**
+   - **iOS Simulator**: Press `i` in the terminal or run `npm run ios`
+   - **Android Emulator**: Press `a` in the terminal or run `npm run android`
+   - **Web Browser**: Press `w` in the terminal or run `npm run web`
+   - **Physical Device**: Scan the QR code with Expo Go app
 
-## Get a fresh project
+## Project Structure
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+src/
+├── components/          # Reusable UI components
+│   ├── atoms/          # Basic components (buttons, inputs)
+│   ├── molecules/      # Composite components (cards, modals)
+│   ├── organisms/      # Complex components (forms, lists)
+│   └── templates/      # Layout components
+├── screens/            # Screen components
+│   ├── ProductList/    # Product listing screen
+│   └── Payment/        # Payment processing screen
+├── store/              # Redux store and slices
+├── utils/              # Utility functions
+├── types/              # TypeScript type definitions
+└── theme.ts           # App theme configuration
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features
 
-## Learn more
+- **Product Catalog**: Browse products with images and pricing
+- **Shopping Cart**: Add/remove items with quantity management
+- **Currency Conversion**: Support for multiple currencies (USD, EUR, GBP)
+- **Price Categories**: Different pricing tiers (Retail, Business, First Class)
+- **Payment Processing**: Cash and card payment options with form validation
+- **Responsive Design**: Optimized for mobile devices
 
-To learn more about developing your project with Expo, look at the following resources:
+## Technologies Used
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- **React Native** with **Expo**
+- **TypeScript** for type safety
+- **Redux Toolkit** for state management
+- **TanStack Query** for API calls
+- **React Hook Form** for form validation
+- **Styled Components** for styling
+- **React Native Gesture Handler** for swipe interactions
 
-## Join the community
+## API
 
-Join our community of developers creating universal apps.
+The app connects to a mock API at:
+```
+https://my-json-server.typicode.com/Felixparm/immfly-api
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Development Commands
+
+- `npm start` - Start the development server
+- `npm run android` - Run on Android emulator
+- `npm run ios` - Run on iOS simulator
+- `npm run web` - Run in web browser
+- `npm run lint` - Run ESLint
+
+## Technical Choices
+
+### Architecture & Design Patterns
+
+- **Atomic Design**: Components are organized in a hierarchical structure (atoms → molecules → organisms → templates) for better reusability and maintainability. This approach ensures consistent UI patterns and makes the codebase scalable.
+
+- **Centralized Theme**: A unified theme system provides consistent colors, typography, and spacing across the entire application, making design updates easier and ensuring visual coherence.
+
+- **Utility Functions**: Common logic is centralized in utility files (formatters, currency conversion, image mapping) to promote code reuse and maintain single sources of truth.
+
+### Styling & Layout
+
+- **Styled Components**: Provides component-scoped styling with TypeScript support, eliminating CSS conflicts and enabling dynamic styling based on props. Each component has its own styles file for better organization.
+
+- **Flexbox Layout**: Leveraged extensively for responsive layouts that adapt to different screen sizes, ensuring consistent UI across devices while maintaining clean and readable code.
+
+### State Management & Data Fetching
+
+- **TanStack Query**: Handles API calls with built-in caching, loading states, and error handling. Provides better user experience with optimistic updates and background refetching.
+
+- **Redux Toolkit**: Manages the shopping basket state globally, allowing seamless data sharing between screens. The toolkit reduces boilerplate code while maintaining predictable state updates.
+
+### Form Handling & Performance
+
+- **React Hook Form**: Provides efficient form validation with minimal re-renders. Particularly useful for the card payment form with complex validation rules (expiration date, CVV, card number format).
+
+- **Performance Optimization**: Uses `useMemo` and `useCallback` hooks to prevent unnecessary recalculations and re-renders, especially important for price calculations and product grid rendering.
+
+### Additional Technical Decisions
+
+- **TypeScript**: Ensures type safety and better developer experience with IntelliSense and compile-time error detection.
+- **Gesture Handler**: Enables smooth swipe-to-delete functionality for basket items with native performance.
+- **Modular Structure**: Screens are organized in separate directories with their own styles and types, promoting maintainability and team collaboration.

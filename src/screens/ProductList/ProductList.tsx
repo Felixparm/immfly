@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import ScreenTemplate from '../../components/templates/ScreenTemplate';
@@ -23,7 +23,7 @@ export default function ProductList() {
   const { data: products, isLoading, error } = useProducts();
   const { basket, currency, selectedCategory, handleIncrement, handleDecrement, setCurrency, handleCategoryChange } = useBasket();
   
-  const calculateTotalPrice = () => {
+  const calculateTotalPrice = useMemo(() => {
     if (!products) return 0;
     return basket.reduce((total, item) => {
       const product = products.find(p => p.id === item.productId);
@@ -31,7 +31,7 @@ export default function ProductList() {
       const { totalPrice } = calculateProductPrice(product, selectedCategory, currency, item.quantity);
       return total + totalPrice;
     }, 0);
-  };
+  }, [products, basket, selectedCategory, currency]);
 
   if (isLoading) {
     return (
@@ -53,7 +53,7 @@ export default function ProductList() {
     );
   }
 
-  const renderProductGrid = () => {
+  const renderProductGrid = useMemo(() => {
     return products?.map((product, index) => {
       const basketItem = basket.find(item => item.productId === product.id);
       const quantity = basketItem?.quantity || 0;
@@ -73,26 +73,26 @@ export default function ProductList() {
         </CardContainer>
       );
     });
-  };
+  }, [products, basket, selectedCategory, currency, handleIncrement, handleDecrement]);
 
   return (
     <ScreenTemplate title="Product List">
       <Container>
         <ScrollContainer>
           <Grid>
-            {renderProductGrid()}
+            {renderProductGrid}
           </Grid>
         </ScrollContainer>
         <BottomContainer>
           <BottomBar 
-            totalPrice={calculateTotalPrice()} 
+            totalPrice={calculateTotalPrice} 
             selectedCategory={selectedCategory}
             onCategoryChange={handleCategoryChange}
             selectedCurrency={currency}
             onPayPress={() => router.push('/payment')}
           />
           <CurrencyDisplay 
-            usdAmount={calculateTotalPrice()} 
+            usdAmount={calculateTotalPrice} 
             selectedCurrency={currency}
             onCurrencyChange={setCurrency}
           />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ScreenTemplate from '../../components/templates/ScreenTemplate';
@@ -37,24 +37,26 @@ export default function Payment() {
   const [showCardModal, setShowCardModal] = useState(false);
   const [cashAmount, setCashAmount] = useState('');
 
-  const { paymentItems, grandTotal } = basket.reduce((acc, item) => {
-    const product = products?.find(p => p.id === item.productId);
-    if (!product) return acc;
-    const { totalPrice } = calculateProductPrice(product, selectedCategory, currency, item.quantity);
-    acc.paymentItems.push({
-      id: item.productId,
-      label: item.title,
-      count: item.quantity,
-      totalPrice,
-      currency
-    });
-    acc.grandTotal += totalPrice;
-    return acc;
-  }, { paymentItems: [] as Array<BasketItemProps>, grandTotal: 0 });
+  const { paymentItems, grandTotal } = useMemo(() => {
+    return basket.reduce((acc, item) => {
+      const product = products?.find(p => p.id === item.productId);
+      if (!product) return acc;
+      const { totalPrice } = calculateProductPrice(product, selectedCategory, currency, item.quantity);
+      acc.paymentItems.push({
+        id: item.productId,
+        label: item.title,
+        count: item.quantity,
+        totalPrice,
+        currency
+      });
+      acc.grandTotal += totalPrice;
+      return acc;
+    }, { paymentItems: [] as Array<BasketItemProps>, grandTotal: 0 });
+  }, [basket, products, selectedCategory, currency]);
 
   const currencySymbol = getCurrencySymbol(currency);
 
-  const handleCashPayment = () => {
+  const handleCashPayment = useCallback(() => {
     processPayment({
       type: 'cash',
       amount: parseFloat(cashAmount),
@@ -70,9 +72,9 @@ export default function Payment() {
         console.error('Payment failed:', error);
       }
     });
-  };
+  }, [processPayment, cashAmount, currency, paymentItems, handleClearBasket, router]);
 
-  const handleCardPayment = () => {
+  const handleCardPayment = useCallback(() => {
     processPayment({
       type: 'card',
       amount: grandTotal,
@@ -88,7 +90,7 @@ export default function Payment() {
         console.error('Payment failed:', error);
       }
     });
-  };
+  }, [processPayment, grandTotal, currency, paymentItems, handleClearBasket, router]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
