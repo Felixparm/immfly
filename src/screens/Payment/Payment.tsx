@@ -11,8 +11,8 @@ import ConfirmButton from '../../components/atoms/ConfirmButton/ConfirmButton';
 import CardPaymentForm from '../../components/organisms/CardPaymentForm/CardPaymentForm';
 import { useBasket } from '../../store/useBasket';
 import { calculateProductPrice, getCurrencySymbol, formatPrice } from '../../utils/currencyConverter';
-import { PriceCategory } from '../../types/enums';
 import { useProducts } from '../../modules/useProducts';
+import { usePayment } from '../../modules/usePayment';
 import { BasketItemProps } from '../../components/molecules/BasketItem/BasketItem.types';
 import { theme } from '../../theme';
 import {
@@ -30,8 +30,9 @@ import {
 
 export default function Payment() {
   const router = useRouter();
-  const { basket, currency, selectedCategory, handleRemoveItem } = useBasket();
+  const { basket, currency, selectedCategory, handleRemoveItem, handleClearBasket } = useBasket();
   const { data: products } = useProducts();
+  const { mutate: processPayment } = usePayment();
   const [showCashModal, setShowCashModal] = useState(false);
   const [showCardModal, setShowCardModal] = useState(false);
   const [cashAmount, setCashAmount] = useState('');
@@ -52,6 +53,42 @@ export default function Payment() {
   }, { paymentItems: [] as Array<BasketItemProps>, grandTotal: 0 });
 
   const currencySymbol = getCurrencySymbol(currency);
+
+  const handleCashPayment = () => {
+    processPayment({
+      type: 'cash',
+      amount: parseFloat(cashAmount),
+      currency,
+      items: paymentItems
+    }, {
+      onSuccess: () => {
+        handleClearBasket();
+        setShowCashModal(false);
+        router.push('/');
+      },
+      onError: (error) => {
+        console.error('Payment failed:', error);
+      }
+    });
+  };
+
+  const handleCardPayment = () => {
+    processPayment({
+      type: 'card',
+      amount: grandTotal,
+      currency,
+      items: paymentItems
+    }, {
+      onSuccess: () => {
+        handleClearBasket();
+        setShowCardModal(false);
+        router.push('/');
+      },
+      onError: (error) => {
+        console.error('Payment failed:', error);
+      }
+    });
+  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -109,14 +146,15 @@ export default function Payment() {
             </InputContainer>
             <ConfirmButton
               title="Confirm"
-              onPress={() => setShowCashModal(false)}
+              onPress={handleCashPayment}
+              disabled={parseFloat(cashAmount) < grandTotal || !cashAmount}
             />
           </ModalContent>
         </CustomModal>
         <CustomModal visible={showCardModal} onClose={() => setShowCardModal(false)}>
           <ModalContent>
             <ModalTitle>Card Payment</ModalTitle>
-            <CardPaymentForm onSubmit={() => setShowCardModal(false)} />
+            <CardPaymentForm onSubmit={handleCardPayment} />
           </ModalContent>
         </CustomModal>
       </ScreenTemplate>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
-
 import ScreenTemplate from '../../components/templates/ScreenTemplate';
 import ProductCard from '../../components/molecules/ProductCard/ProductCard';
 import BottomBar from '../../components/organisms/BottomBar/BottomBar';

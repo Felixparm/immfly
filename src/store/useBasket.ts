@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from '../hooks/useAppSelector';
-import { increment, decrement, setCurrency as setCurrencyAction, setCategory, removeItem } from './basketSlice';
+import { increment, decrement, setCurrency as setCurrencyAction, setCategory, removeItem, clearBasket } from './basketSlice';
 import { PriceCategory } from '../types/enums';
 
 export function useBasket() {
@@ -26,6 +26,10 @@ export function useBasket() {
     dispatch(removeItem(productId));
   };
 
+  const handleClearBasket = () => {
+    dispatch(clearBasket());
+  };
+
   return {
     basket: items,
     currency,
@@ -35,5 +39,6 @@ export function useBasket() {
     setCurrency,
     handleCategoryChange,
     handleRemoveItem,
+    handleClearBasket,
   };
 }

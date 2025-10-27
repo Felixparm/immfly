@@ -9,7 +9,7 @@ export const useProducts = () => {
     }
     return response.json();
   };
-
+  
   return useQuery({
     queryKey: ['products'],
     queryFn: fetchProducts,
