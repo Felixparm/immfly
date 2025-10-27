@@ -1,14 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 
-import ScreenTemplate from '../components/templates/ScreenTemplate';
-import ProductCard from '../components/molecules/ProductCard/ProductCard';
-import BottomBar from '../components/organisms/BottomBar/BottomBar';
-import CurrencyDisplay from '../components/atoms/CurrencyDisplay/CurrencyDisplay';
-import { useProducts } from '../modules/useProducts';
-import { useBasket } from '../reducer/useBasket';
-import { calculateProductPrice } from '../utils/currencyConverter';
+import ScreenTemplate from '../../components/templates/ScreenTemplate';
+import ProductCard from '../../components/molecules/ProductCard/ProductCard';
+import BottomBar from '../../components/organisms/BottomBar/BottomBar';
+import CurrencyDisplay from '../../components/atoms/CurrencyDisplay/CurrencyDisplay';
+import { useProducts } from '../../modules/useProducts';
+import { useBasket } from '../../reducer/useBasket';
+import { calculateProductPrice } from '../../utils/currencyConverter';
+import {
+  Container,
+  ScrollContainer,
+  BottomContainer,
+  Centered,
+  Grid,
+  CardContainer,
+  ErrorText
+} from './ProductList.styles';
 
 export default function ProductList() {
   const router = useRouter();
@@ -28,9 +37,9 @@ export default function ProductList() {
   if (isLoading) {
     return (
       <ScreenTemplate title="Product List">
-        <View style={styles.centered}>
+        <Centered>
           <ActivityIndicator size="large" />
-        </View>
+        </Centered>
       </ScreenTemplate>
     );
   }
@@ -38,9 +47,9 @@ export default function ProductList() {
   if (error) {
     return (
       <ScreenTemplate title="Product List">
-        <View style={styles.centered}>
-          <Text>Error loading products</Text>
-        </View>
+        <Centered>
+          <ErrorText>Error loading products</ErrorText>
+        </Centered>
       </ScreenTemplate>
     );
   }
@@ -52,7 +61,7 @@ export default function ProductList() {
       const { convertedPrice } = calculateProductPrice(product, selectedCategory, currency);
       const productWithCorrectPrice = { ...product, price: convertedPrice };
       return (
-        <View key={index} style={styles.cardContainer}>
+        <CardContainer key={index}>
           <ProductCard 
             product={productWithCorrectPrice} 
             quantity={quantity}
@@ -62,20 +71,20 @@ export default function ProductList() {
             onIncrement={() => handleIncrement(product.id, product.label)}
             onDecrement={() => handleDecrement(product.id)}
           />
-        </View>
+        </CardContainer>
       );
     });
   };
 
   return (
     <ScreenTemplate title="Product List">
-      <View style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.grid}>
+      <Container>
+        <ScrollContainer>
+          <Grid>
             {renderProductGrid()}
-          </View>
-        </ScrollView>
-        <View style={styles.bottomContainer}>
+          </Grid>
+        </ScrollContainer>
+        <BottomContainer>
           <BottomBar 
             totalPrice={calculateTotalPrice()} 
             selectedCategory={selectedCategory}
@@ -88,34 +97,9 @@ export default function ProductList() {
             selectedCurrency={currency}
             onCurrencyChange={setCurrency}
           />
-        </View>
-      </View>
+        </BottomContainer>
+      </Container>
     </ScreenTemplate>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  bottomContainer: {
-    paddingBottom: 20,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  cardContainer: {
-    width: '48%',
-    marginBottom: 8,
-  },
-});

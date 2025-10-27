@@ -3,15 +3,10 @@ import { View, Text } from 'react-native';
 import { ExpirationDateInputProps } from './ExpirationDateInput.types';
 import { Container, StyledInput } from './ExpirationDateInput.styles';
 import { theme } from '../../../theme';
+import { formatExpirationDate } from '../../../utils/formatters';
 
 export default function ExpirationDateInput({ value, onChangeText, width, label }: ExpirationDateInputProps) {
-  const formatExpirationDate = (text: string) => {
-    const digits = text.replace(/\D/g, '').slice(0, 4);
-    if (digits.length >= 3) {
-      return `${digits.slice(0, 2)}-${digits.slice(2)}`;
-    }
-    return digits;
-  };
+
 
   const handleTextChange = (text: string) => {
     const formatted = formatExpirationDate(text);

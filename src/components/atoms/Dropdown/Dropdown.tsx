@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { DropdownProps } from './Dropdown.types';
 import { Container, Button, ButtonText, Arrow, Option, OptionText } from './Dropdown.styles';
-import CustomModal from '../CustomModal/CustomModal';
+import CustomModal from '../../molecules/CustomModal/CustomModal';
+import { formatLabel } from '../../../utils/formatters';
 
 export default function Dropdown({ value, options, onValueChange }: DropdownProps) {
   const [isVisible, setIsVisible] = useState(false);
 
-  const formatLabel = (value: string) => {
-    return value.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-  };
+
 
   const handleSelect = (option: string) => {
     onValueChange(option);

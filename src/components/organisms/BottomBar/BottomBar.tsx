@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from '../../molecules/Dropdown/Dropdown';
+import Dropdown from '../../atoms/Dropdown/Dropdown';
 import { formatPrice } from '../../../utils/currencyConverter';
 import { WhiteContainer, Container, LeftSection, RightSection, PayText, CurrencyDropdownContainer, CurrencyText } from './BottomBar.styles';
 import { PRICE_CATEGORY_OPTIONS, PriceCategory } from '../../../types/enums';

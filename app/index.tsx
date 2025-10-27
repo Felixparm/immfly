@@ -1,3 +1,3 @@
-import ProductList from '../src/screens/ProductList';
+import ProductList from '../src/screens/ProductList/ProductList';
 
 export default ProductList;
