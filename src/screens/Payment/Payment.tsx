@@ -9,7 +9,7 @@ import CustomModal from '../../components/molecules/CustomModal/CustomModal';
 import Input from '../../components/atoms/Input/Input';
 import ConfirmButton from '../../components/atoms/ConfirmButton/ConfirmButton';
 import CardPaymentForm from '../../components/organisms/CardPaymentForm/CardPaymentForm';
-import { useBasket } from '../../reducer/useBasket';
+import { useBasket } from '../../store/useBasket';
 import { calculateProductPrice, getCurrencySymbol, formatPrice } from '../../utils/currencyConverter';
 import { PriceCategory } from '../../types/enums';
 import { useProducts } from '../../modules/useProducts';

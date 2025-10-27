@@ -7,7 +7,7 @@ import ProductCard from '../../components/molecules/ProductCard/ProductCard';
 import BottomBar from '../../components/organisms/BottomBar/BottomBar';
 import CurrencyDisplay from '../../components/atoms/CurrencyDisplay/CurrencyDisplay';
 import { useProducts } from '../../modules/useProducts';
-import { useBasket } from '../../reducer/useBasket';
+import { useBasket } from '../../store/useBasket';
 import { calculateProductPrice } from '../../utils/currencyConverter';
 import {
   Container,

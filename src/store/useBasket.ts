@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from '../hooks/useAppSelector';
-import { increment, decrement, setCurrency as setCurrencyAction, setCategory, removeItem } from '../store/basketSlice';
+import { increment, decrement, setCurrency as setCurrencyAction, setCategory, removeItem } from './basketSlice';
 import { PriceCategory } from '../types/enums';
 
 export function useBasket() {
