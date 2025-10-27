@@ -127,3 +127,32 @@ https://my-json-server.typicode.com/Felixparm/immfly-api
 - **TypeScript**: Ensures type safety and better developer experience with IntelliSense and compile-time error detection.
 - **Gesture Handler**: Enables smooth swipe-to-delete functionality for basket items with native performance.
 - **Modular Structure**: Screens are organized in separate directories with their own styles and types, promoting maintainability and team collaboration.
+
+## Known Limitations
+
+### Design & UX Improvements
+
+- **Modal Components**: Current modal implementation could be replaced with native mobile-specific components like pickers or dropdown menus for better user experience and platform consistency.
+
+- **Mobile Optimization**: Limited testing on iOS devices may result in platform-specific issues. Each feature should be thoroughly tested on both Android and iOS across different device sizes, using both emulators and physical devices.
+
+### Code Quality & Maintenance
+
+- **Style Refactoring**: Many styled components share similar patterns that could be further abstracted into reusable style mixins or base components to reduce code duplication.
+
+- **Hardcoded Values**: Text strings, error messages, and configuration values are hardcoded throughout the application. These should be moved to:
+  - Translation files for internationalization support
+  - Enum declarations for typed constants
+  - Configuration files for app settings
+
+### Testing & Quality Assurance
+
+- **Unit Testing**: No test coverage implemented. Recommended approach:
+  - **Vitest** for business logic, utilities, and hooks testing
+  - **Storybook** for component visual testing and documentation
+
+### Performance & Scalability
+
+- **Image Optimization**: Product images are loaded directly without optimization, which could impact performance on slower networks.
+
+- **Error Handling**: Limited error boundaries and fallback UI components for better user experience during failures.
