@@ -1,11 +1,15 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ScreenTemplate from '../components/templates/ScreenTemplate';
 import TopHeader from '../components/molecules/TopHeader/TopHeader';
 import BasketItem from '../components/molecules/BasketItem/BasketItem';
 import PaymentButton from '../components/molecules/PaymentButton/PaymentButton';
+import CustomModal from '../components/molecules/CustomModal/CustomModal';
+import Input from '../components/atoms/Input/Input';
+import ConfirmButton from '../components/atoms/ConfirmButton/ConfirmButton';
+import CardPaymentForm from '../components/organisms/CardPaymentForm/CardPaymentForm';
 import { useBasket } from '../reducer/useBasket';
 import { calculateProductPrice, getCurrencySymbol, formatPrice } from '../utils/currencyConverter';
 import { PriceCategory } from '../types/enums';
@@ -17,6 +21,10 @@ export default function Payment() {
   const router = useRouter();
   const { basket, currency, selectedCategory, handleRemoveItem } = useBasket();
   const { data: products } = useProducts();
+  const [showCashModal, setShowCashModal] = useState(false);
+  const [showCardModal, setShowCardModal] = useState(false);
+  const [cashAmount, setCashAmount] = useState('');
+
   const { paymentItems, grandTotal } = basket.reduce((acc, item) => {
     const product = products?.find(p => p.id === item.productId);
     if (!product) return acc;
@@ -66,15 +74,40 @@ export default function Payment() {
             logo="💵"
             title="Cash"
             backgroundColor={theme.colors.black}
-            onPress={() => console.log('Cash payment')}
+            onPress={() => setShowCashModal(true)}
           />
           <PaymentButton
             logo="💳"
             title="Card"
             backgroundColor={theme.colors.blue}
-            onPress={() => console.log('Card payment')}
+            onPress={() => setShowCardModal(true)}
           />
         </View>
+        <CustomModal visible={showCashModal} onClose={() => setShowCashModal(false)}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Cash Payment</Text>
+            <Text style={styles.modalLabel}>Enter the cash amount you want to provide:</Text>
+            <View style={styles.inputContainer}>
+              <Input
+                value={cashAmount}
+                onChangeText={setCashAmount}
+                keyboardType="decimal-pad"
+                width={100}
+                adornment={currencySymbol}
+              />
+            </View>
+            <ConfirmButton
+              title="Confirm"
+              onPress={() => setShowCashModal(false)}
+            />
+          </View>
+        </CustomModal>
+        <CustomModal visible={showCardModal} onClose={() => setShowCardModal(false)}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Card Payment</Text>
+            <CardPaymentForm onSubmit={() => setShowCardModal(false)} />
+          </View>
+        </CustomModal>
       </ScreenTemplate>
     </GestureHandlerRootView>
   );
@@ -114,4 +147,30 @@ const styles = StyleSheet.create({
     gap: 16,
     backgroundColor: theme.colors.white,
   },
+  modalContent: {
+    padding: 20,
+    backgroundColor: theme.colors.white,
+    borderRadius: 12,
+    minWidth: 300,
+  },
+  modalTitle: {
+    fontSize: theme.typography.large.fontSize,
+    fontWeight: theme.typography.large.fontWeight,
+    color: theme.colors.black,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  modalLabel: {
+    fontSize: theme.typography.medium.fontSize,
+    color: theme.colors.black,
+    marginBottom: 12,
+  },
+  inputContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  modalButtons: {
+    marginTop: 16,
+  },
+
 });

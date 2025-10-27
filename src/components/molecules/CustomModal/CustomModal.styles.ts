@@ -12,5 +12,21 @@ export const ModalContainer = styled.View({
   backgroundColor: theme.colors.white,
   borderRadius: 8,
   padding: 8,
-  minWidth: 120
+});
+
+export const CloseButton = styled.TouchableOpacity({
+  position: 'absolute',
+  top: 8,
+  right: 8,
+  zIndex: 1,
+  width: 24,
+  height: 24,
+  alignItems: 'center',
+  justifyContent: 'center'
+});
+
+export const CloseButtonText = styled.Text({
+  fontSize: 16,
+  color: theme.colors.gray,
+  fontWeight: 'bold'
 });

@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { theme } from '../../../theme';
 import { ButtonType } from './CircleButton.types';
 
-export const Button = styled.TouchableOpacity<{ type: ButtonType; disabled?: boolean }>(props => ({
+export const Button = styled.TouchableOpacity<{ type: ButtonType; disabled?: boolean }>((props: { type: ButtonType; disabled?: boolean }) => ({
   width: 24,
   height: 24,
   borderRadius: 12,

@@ -17,8 +17,8 @@ export const Container = styled.View({
   overflow: 'hidden'
 });
 
-export const LeftSection = styled.TouchableOpacity<{ disabled?: boolean }>(props => ({
-  flex: 4,
+export const LeftSection = styled.TouchableOpacity<{ disabled?: boolean }>((props: { disabled?: boolean }) => ({
+  flex: 2,
   backgroundColor: theme.colors.blue,
   justifyContent: 'center',
   alignItems: 'center',
